@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseApiResponse<DetailUserDto>> getUser(@PathVariable UUID id) {
+    public ResponseEntity<BaseApiResponse<DetailUserDto>> findUser(@PathVariable UUID id) {
         return ResponseEntity.ok().body(ApiResponseFactory.success(userService.getUser(id)));
     }
 }

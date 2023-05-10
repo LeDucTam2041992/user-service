@@ -1,4 +1,4 @@
-package pro.userservice.config;
+package pro.userservice.cache.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
@@ -18,7 +18,6 @@ public class CommonCacheConfiguration {
 
     public static final String USER = "user";
 
-
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
@@ -27,8 +26,7 @@ public class CommonCacheConfiguration {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
 
-
-    @Bean
+    @Bean("redis-cache-manager")
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return builder -> builder
                 //user cache config

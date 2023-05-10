@@ -2,6 +2,7 @@ package pro.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pro.userservice.dto.DetailUserDto;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    @Cacheable(value = CommonCacheConfiguration.USER, key = "#id")
+    @Cacheable(value = "user", keyGenerator = "customKeyGenerator", cacheManager = "multi-cache-manager")
     public DetailUserDto getUser(UUID id) {
         var user = userRepository.findById(id).orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         var userDto =  mapper.map(user, DetailUserDto.class);

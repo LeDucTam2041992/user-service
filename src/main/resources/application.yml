@@ -75,6 +75,25 @@ spring:
         - lo*
       preferred-networks:
         - 10.0
+  cache:
+    multi:
+      caffeine:
+        expireAfterWrite: 100s
+        maximumSize: 5000
+      redis:
+        expires:
+          user: 30m
+          location: 1d
+    memory:
+      properties:
+        location:
+          cache-name: location
+          expired-time: 1d
+          maximum-size: 5000
+        user:
+          cache-name: user
+          expired-time: 30m
+          maximum-size: 5000
 
 feign:
   client:
@@ -98,3 +117,4 @@ auth:
 url:
   auth-service: ${URL_AUTH_SERVICE:http://localhost:2070/api/auth}
   storage-service: ${URL_STORAGE_SERVICE:http://localhost:2080/api/storage}
+
