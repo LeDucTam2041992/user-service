@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    driverClassName: ${JDBC_DATABASE_DRIVER:org.postgresql.Driver}
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://127.0.0.1:5432/postgres?currentSchema=user-service}
+    username: ${JDBC_DATABASE_USERNAME:tamld}
+    password: ${JDBC_DATABASE_PASSWORD:123456}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        default_schema: ${SCHEMA:user-service}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      ssl: false
+      timeout: 12m
+      jedis:
+        pool:
+          max-active: 1
+          max-idle: 25
+          max-wait: 30000ms
+          min-idle: 5
+      password: ${REDIS_PASSWORD:123456}
+  cloud:
+    stream:
+      bindings:
+        msmChannel-out-0:
+          destination: db.noti
+          content-type: application/json
+      kafka:
+        binder:
+          brokers:
+            - localhost:29092
+        bindings:
+          input:
+            consumer:
+              ackMode: MANUAL
+    inetutils:
+      ignored-interfaces:
+        - esc-eth*
+        - esc-eth0@if6
+        - ecs-eth0@*
+        - lo*
+      preferred-networks:
+        - 10.0
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: ${PARAM_FEIGN.CLIENT.CONFIG.DEFAULT.CONNECTTIMEOUT:60000}
+        readTimeout: ${PARAM_FEIGN.CLIENT.CONFIG.DEFAULT.READTIMEOUT:60000}
+        loggerLevel: ${PARAM_FEIGN.CLIENT.CONFIG.DEFAULT.LOGGERLEVEL:basic}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: TRACE
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
+
+auth:
+  internalKeySign: ${INTERNAL_KEY_SIGN:azc@12KttHbbVKLOKJnxmKJbnBHbH9lkklihxsklw}
+  expiredInSeconds: ${INTERNAL_EXPRIED:10}
+
+url:
+  auth-service: ${URL_AUTH_SERVICE:http://localhost:2070/api/auth}
+  storage-service: ${URL_STORAGE_SERVICE:http://localhost:2080/api/storage}
