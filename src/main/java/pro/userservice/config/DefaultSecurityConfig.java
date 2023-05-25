@@ -21,16 +21,16 @@ public class DefaultSecurityConfig {
 		http
 				.cors()
 				.and()
-				.csrf().disable();
-//				.exceptionHandling()
-//				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//				.and()
-//				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//				.authorizeHttpRequests(authorizeRequests ->
-//					authorizeRequests
-//							.anyRequest()
-//							.authenticated()
-//				);
+				.csrf().disable()
+				.exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and()
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+				.authorizeHttpRequests(authorizeRequests ->
+					authorizeRequests
+							.anyRequest()
+							.authenticated()
+				);
 		return http.build();
 	}
 }
