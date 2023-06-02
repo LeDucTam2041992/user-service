@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - name: user-api
+              containerPort: 8080
+              protocol: TCP
+            env:
+              - name: JDBC_DATABASE_URL
+                value: >-
+                  jdbc:postgresql://postgresql.database.svc.cluster.local:5432/postgres?currentSchema=user-service
+              - name: JDBC_DATABASE_USERNAME
+                value: postgres
+              - name: JDBC_DATABASE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: auth-server-secret
+                    key: password
+              - name: REDIS_HOST
+                value: redis-master.default.svc.cluster.local
+              - name: REDIS_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: redis
+                    key: redis-password
+              - name: URL_AUTH_SERVICE
+                value: http://auth-server.default.svc.cluster.local:80/api/auth
+              - name: URL_STORAGE_SERVICE
+                value: http://storage-service.default.svc.cluster.local:80/api/storage
