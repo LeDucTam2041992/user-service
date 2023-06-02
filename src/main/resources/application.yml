@@ -79,7 +79,7 @@ spring:
   cache:
     multi:
       caffeine:
-        expireAfterWrite: 100s
+        expireAfterWrite: 10s
         maximumSize: 5000
       redis:
         expires:

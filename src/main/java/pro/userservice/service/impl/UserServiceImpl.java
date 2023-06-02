@@ -1,6 +1,7 @@
 package pro.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final StorageServiceCommunicator storageServiceCommunicator;
@@ -59,6 +61,8 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "user", keyGenerator = "customKeyGenerator", cacheManager = "multi-cache-manager")
     public DetailUserDto getUser(UUID id) {
         var user = userRepository.findById(id).orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+        var address = user.getAddress();
+        log.info("address user {}", address);
         var userDto =  mapper.map(user, DetailUserDto.class);
         if (userDto.getAvatar() != null) {
             userDto.setAvatar(storageServiceCommunicator.generateUrl(userDto.getAvatar()));
