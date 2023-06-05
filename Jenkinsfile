@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    dockerimagename = "user-service"
+    dockerimagename = "tamleduc/user-service"
     dockerImage = ""
   }
 
