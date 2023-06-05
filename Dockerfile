@@ -1,13 +1,11 @@
 FROM openjdk:17-jdk-slim
 
 LABEL author="tamld-project"
-RUN apt-get update && apt-get install -y --no-install-recommends net-tools maven && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends net-tools && apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY ./src/main/resources/entrypoint.sh ./entrypoint.sh
 
 #cho phep run scrip entrypoint.sh
 RUN chmod +x ./entrypoint.sh
-
-RUN mvn clean install
 
 COPY ./target/*.jar /app/service.jar
 
