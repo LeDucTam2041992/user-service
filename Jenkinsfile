@@ -12,13 +12,13 @@ pipeline {
   }
 
   stages {
-    stage('Cancel Previous Builds') {
-      steps {
-        script {
-          cancelPreviousBuilds()
-        }
-      }
-    }
+//     stage('Cancel Previous Builds') {
+//       steps {
+//         script {
+//           cancelPreviousBuilds()
+//         }
+//       }
+//     }
 
     stage('Checkout Source') {
       steps {
