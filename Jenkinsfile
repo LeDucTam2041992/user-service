@@ -22,8 +22,8 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git 'https://github.com/LeDucTam2041992/user-service'
-//         checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service']])
+//         git 'https://github.com/LeDucTam2041992/user-service'
+        checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service']])
       }
     }
 
