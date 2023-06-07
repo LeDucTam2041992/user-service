@@ -20,19 +20,18 @@ pipeline {
 //       }
 //     }
 
-    stage('Checkout Source & build') {
+    stage('Checkout Source') {
       steps {
 //         git 'https://github.com/LeDucTam2041992/user-service'
         checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service']])
-        sh 'mvn clean install -Dmaven.test.skip=true'
       }
     }
 
-//     stage('Build source') {
-//       steps {
-//
-//       }
-//     }
+    stage('Build source') {
+      steps {
+        sh 'mvn clean install -Dmaven.test.skip=true'
+      }
+    }
 
     stage('Build image') {
       steps{
