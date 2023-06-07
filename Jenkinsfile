@@ -54,12 +54,6 @@ pipeline {
       }
     }
   }
-
-  post {
-    cleanup {
-      deleteDir()
-    }
-  }
 }
 
 @NonCPS //https://medium.com/@vedranvucetic/run-only-last-triggered-job-for-branch-in-descriptive-jenkins-pipeline-a07bb84ae075
