@@ -73,10 +73,10 @@ pipeline {
 
     stage('Deploy k8s') {
       environment {
-        k8sUrl = 'K8s_URl'
+        k8sUrl = 'k8s_uri'
       }
       steps{
-        withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'k8_credential', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: k8sUrl) {
+        withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'k8_credential', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: '$k8sUrl') {
           sh (script: "/opt/homebrew/bin/kubectl set image deployment/user-service-deployment user-service=$DOCKER_IMAGE_INFO")
           sh (script: "/opt/homebrew/bin/kubectl rollout restart deployment/user-service-deployment")
         }
