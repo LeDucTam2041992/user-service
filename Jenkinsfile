@@ -37,7 +37,7 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          def DOCKER_IMAGE = dockerRegistry + '/' + dockerimagename + ':latest'
+          def DOCKER_IMAGE = dockerimagename + ':latest'
           dockerImage = docker.build("$DOCKER_IMAGE")
         }
       }
