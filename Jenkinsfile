@@ -1,8 +1,8 @@
 pipeline {
 
   environment {
-    dockerRegistry = "https://registry.hub.docker.com/tamleduc"
-    dockerimagename = "user-service"
+    dockerRegistry = "https://registry.hub.docker.com"
+    dockerimagename = "tamleduc/user-service"
     dockerImage = ""
   }
 
