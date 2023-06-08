@@ -64,8 +64,8 @@ pipeline {
     stage('Remove local image') {
       steps{
         script {
-          def imageTag = 'registry.hub.docker.com/' + dockerimagename
-          sh (script: "docker image rm $dockerimagename")
+          def imageTag = 'registry.hub.docker.com/' + DOCKER_IMAGE_INFO
+          sh (script: "docker image rm $DOCKER_IMAGE_INFO")
           sh (script: "docker image rm $imageTag")
         }
       }
