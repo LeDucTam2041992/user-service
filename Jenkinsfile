@@ -3,7 +3,9 @@ pipeline {
   environment {
     dockerRegistry = "https://registry.hub.docker.com"
     dockerimagename = "tamleduc/user-service"
+    version = "0.2.0"
     dockerImage = ""
+    DOCKER_IMAGE_INFO = ""
   }
 
   agent any
@@ -30,15 +32,18 @@ pipeline {
 
     stage('Build source') {
       steps {
-        sh (script: 'mvn clean install -Dmaven.test.skip=true', returnStdout: true)
+        script {
+          sh (script: 'mvn clean install -Dmaven.test.skip=true')
+        }
       }
     }
 
     stage('Build image') {
       steps{
         script {
-          def DOCKER_IMAGE = dockerimagename + ':latest'
-          dockerImage = docker.build("$DOCKER_IMAGE")
+          def tag = sh (script: 'echo $(date +%Y%m%d%H%M%S)', returnStdout: true).trim()
+          DOCKER_IMAGE_INFO = dockerimagename + ':' + version + '_' +  tag
+          dockerImage = docker.build("$DOCKER_IMAGE_INFO")
         }
       }
     }
@@ -60,8 +65,17 @@ pipeline {
       steps{
         script {
           def imageTag = 'registry.hub.docker.com/' + dockerimagename
-          sh (script: "docker image rm $dockerimagename", returnStdout: true)
-          sh (script: "docker image rm $imageTag", returnStdout: true)
+          sh (script: "docker image rm $dockerimagename")
+          sh (script: "docker image rm $imageTag")
+        }
+      }
+    }
+
+    stage('Deploy k8s') {
+      steps{
+        withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'k8_credential', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://127.0.0.1:62469') {
+          sh (script: "/opt/homebrew/bin/kubectl set image deployment/user-service-deployment user-service=$DOCKER_IMAGE_INFO")
+          sh (script: "/opt/homebrew/bin/kubectl rollout restart deployment/user-service-deployment")
         }
       }
     }
