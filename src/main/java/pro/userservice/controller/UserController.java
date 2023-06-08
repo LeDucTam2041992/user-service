@@ -34,4 +34,9 @@ public class UserController {
         cacheService.cleanCacheUser();
         return ResponseEntity.ok().body(ApiResponseFactory.success(true));
     }
+
+    @GetMapping("/jenkins-test")
+    public ResponseEntity<BaseApiResponse<String>> testJenkins() {
+        return ResponseEntity.ok().body(ApiResponseFactory.success("Ok!Done"));
+    }
 }
