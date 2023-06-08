@@ -60,8 +60,8 @@ pipeline {
       steps{
         script {
           def imageTag = 'registry.hub.docker.com/' + dockerimagename
-          sh (script: 'docker image rm $dockerimagename')
-          sh (script: 'docker image rm $imageTag')
+          sh (script: "docker image rm $dockerimagename")
+          sh (script: "docker image rm $imageTag")
         }
       }
     }
