@@ -39,4 +39,9 @@ public class UserController {
     public ResponseEntity<BaseApiResponse<String>> testJenkins() {
         return ResponseEntity.ok().body(ApiResponseFactory.success("Ok!Done"));
     }
+
+    @GetMapping("/jenkins-dev")
+    public ResponseEntity<BaseApiResponse<String>> testJenkinsDev() {
+        return ResponseEntity.ok().body(ApiResponseFactory.success("Jenkins-Dev Ok!Done"));
+    }
 }
