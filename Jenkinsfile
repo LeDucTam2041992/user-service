@@ -1,8 +1,8 @@
 pipeline {
 
   environment {
-    dockerRegistry = "https://registry.hub.docker.com"
-    dockerimagename = dockerRegistry + '/' + "tamleduc/user-service:latest"
+    dockerRegistry = "https://registry.hub.docker.com/tamleduc"
+    dockerimagename = "user-service"
     dockerImage = ""
   }
 
@@ -37,7 +37,8 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build dockerimagename
+          def DOCKER_IMAGE = dockerRegistry + '/' + dockerimagename + ':latest'
+          dockerImage = docker.build("$DOCKER_IMAGE")
         }
       }
     }
