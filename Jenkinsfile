@@ -30,7 +30,7 @@ pipeline {
 
     stage('Build source') {
       steps {
-        sh 'mvn clean install -Dmaven.test.skip=true'
+        sh (script: 'mvn clean install -Dmaven.test.skip=true', returnStdout: true)
       }
     }
 
@@ -60,8 +60,8 @@ pipeline {
       steps{
         script {
           def imageTag = 'registry.hub.docker.com/' + dockerimagename
-          sh (script: "docker image rm $dockerimagename")
-          sh (script: "docker image rm $imageTag")
+          sh (script: "docker image rm $dockerimagename", returnStdout: true)
+          sh (script: "docker image rm $imageTag", returnStdout: true)
         }
       }
     }
