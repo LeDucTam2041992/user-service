@@ -1,7 +1,8 @@
 pipeline {
 
   environment {
-    dockerimagename = "tamleduc/user-service"
+    dockerRegistry = "https://registry.hub.docker.com"
+    dockerimagename = dockerRegistry + '/' + "tamleduc/user-service:latest"
     dockerImage = ""
   }
 
@@ -12,13 +13,13 @@ pipeline {
   }
 
   stages {
-//     stage('Cancel Previous Builds') {
-//       steps {
-//         script {
-//           cancelPreviousBuilds()
-//         }
-//       }
-//     }
+    stage('Cancel Previous Builds') {
+      steps {
+        script {
+          cancelPreviousBuilds()
+        }
+      }
+    }
 
     stage('Checkout Source') {
       steps {
@@ -47,8 +48,8 @@ pipeline {
            }
       steps{
         script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
+          docker.withRegistry( dockerRegistry, registryCredential ) {
+            dockerImage.push()
           }
         }
       }
@@ -56,6 +57,19 @@ pipeline {
   }
 }
 
+/*
+(Note)
+Script approvals in jenkins:
+method hudson.model.Executor interrupt hudson.model.Result jenkins.model.CauseOfInterruption[]
+method hudson.model.Job getBuilds
+method hudson.model.Run getExecutor
+method hudson.model.Run getNumber
+method hudson.model.Run isBuilding
+method jenkins.model.Jenkins getItemByFullName java.lang.String
+new jenkins.model.CauseOfInterruption$UserInterruption java.lang.String
+staticMethod jenkins.model.Jenkins getInstance
+staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods toInteger java.lang.Number
+*/
 @NonCPS //https://medium.com/@vedranvucetic/run-only-last-triggered-job-for-branch-in-descriptive-jenkins-pipeline-a07bb84ae075
 def cancelPreviousBuilds() {
     def jobName = env.JOB_NAME
