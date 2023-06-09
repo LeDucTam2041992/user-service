@@ -9,6 +9,10 @@ pipeline {
   }
 
   agent any
+
+  parameters {
+      gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+  }
   tools {
     maven 'Maven_3_8_7'
     dockerTool 'docker_20_10_22'
@@ -25,7 +29,7 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service'
+        git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service'
 //         checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/LeDucTam2041992/user-service']])
       }
     }
