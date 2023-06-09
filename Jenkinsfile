@@ -11,7 +11,7 @@ pipeline {
   agent any
 
   parameters {
-      gitParameter branchFilter: '(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+      gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
   }
   tools {
     maven 'Maven_3_8_7'
